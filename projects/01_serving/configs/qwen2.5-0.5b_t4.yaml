@@ -1,0 +1,16 @@
+# Single T4 (16 GB). T4 (Turing, sm75) has no bf16: use fp16 ("half").
+backend: vllm            # vllm | hf
+model: Qwen/Qwen2.5-0.5B-Instruct
+dtype: half
+tensor_parallel_size: 1
+gpu_memory_utilization: 0.85
+max_model_len: 4096
+enable_prefix_caching: false
+shared_prefix_len: 0
+quantization: null       # e.g. awq with an AWQ checkpoint
+batch_sizes: [1, 4, 16, 64]
+prompt_lens: [128, 1024]
+output_len: 128
+repeats: 3
+seed: 0
+results_file: results/01_serving.jsonl

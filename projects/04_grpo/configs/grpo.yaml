@@ -1,0 +1,14 @@
+model: Qwen/Qwen2.5-0.5B-Instruct
+dataset: openai/gsm8k
+dataset_config: main
+num_generations: 8      # group size
+beta: 0.04              # KL coefficient
+max_prompt_length: 256
+max_completion_length: 512
+learning_rate: 1.0e-6
+per_device_train_batch_size: 8
+gradient_accumulation_steps: 4
+use_vllm: true
+format_reward: true
+seed: 0
+output_dir: checkpoints/grpo

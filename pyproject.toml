@@ -1,0 +1,47 @@
+[project]
+name = "llm-post-training-lab"
+version = "0.1.0"
+description = "Hands-on LLM post-training, serving and multi-GPU projects on small open models."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+# Project 1: serving benchmark. vLLM pins its own torch; install it on the GPU box.
+serve = ["vllm>=0.8", "transformers>=4.45", "accelerate>=0.34"]
+# Projects 2-4: training.
+train = ["torch>=2.4", "transformers>=4.45", "datasets>=3.0", "accelerate>=0.34", "trl>=0.17", "peft>=0.13"]
+deepspeed = ["deepspeed>=0.15"]
+dev = ["pytest>=8.0", "ruff>=0.6", "mypy>=1.11", "types-PyYAML"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/lab"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+strict = true
+files = ["src"]
+
+[[tool.mypy.overrides]]
+module = ["numpy.*", "vllm.*", "transformers.*", "torch.*", "datasets.*", "trl.*", "peft.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "gpu: needs a CUDA GPU",
+    "slow: takes more than a few seconds",
+]
+addopts = "-m 'not gpu'"

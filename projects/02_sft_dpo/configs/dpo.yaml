@@ -1,0 +1,12 @@
+model: checkpoints/sft
+dataset: HuggingFaceH4/ultrafeedback_binarized
+dataset_split: train_prefs
+beta: 0.1
+learning_rate: 5.0e-7
+num_train_epochs: 1
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 16
+max_length: 1024
+fp16: true
+seed: 0
+output_dir: checkpoints/dpo

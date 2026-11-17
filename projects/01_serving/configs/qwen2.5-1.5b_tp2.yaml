@@ -1,0 +1,16 @@
+# Kaggle 2x T4: tensor parallelism across both GPUs. Compare with tensor_parallel_size=1.
+backend: vllm
+model: Qwen/Qwen2.5-1.5B-Instruct
+dtype: half
+tensor_parallel_size: 2
+gpu_memory_utilization: 0.85
+max_model_len: 4096
+enable_prefix_caching: false
+shared_prefix_len: 0
+quantization: null
+batch_sizes: [1, 8, 32, 128]
+prompt_lens: [256, 2048]
+output_len: 128
+repeats: 3
+seed: 0
+results_file: results/01_serving.jsonl

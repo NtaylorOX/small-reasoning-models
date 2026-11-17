@@ -1,0 +1,17 @@
+# Prefix caching experiment: 1,536 of 2,048 prompt tokens are a shared "system prompt".
+# Run twice, with enable_prefix_caching false and true, and compare.
+backend: vllm
+model: Qwen/Qwen2.5-0.5B-Instruct
+dtype: half
+tensor_parallel_size: 1
+gpu_memory_utilization: 0.85
+max_model_len: 4096
+enable_prefix_caching: true
+shared_prefix_len: 1536
+quantization: null
+batch_sizes: [8, 32]
+prompt_lens: [2048]
+output_len: 64
+repeats: 3
+seed: 0
+results_file: results/01_serving.jsonl

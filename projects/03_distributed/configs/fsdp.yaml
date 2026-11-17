@@ -1,0 +1,11 @@
+compute_environment: LOCAL_MACHINE
+distributed_type: FSDP
+mixed_precision: fp16
+num_machines: 1
+num_processes: 2
+fsdp_config:
+  fsdp_version: 2
+  fsdp_auto_wrap_policy: TRANSFORMER_BASED_WRAP
+  fsdp_reshard_after_forward: true
+  fsdp_state_dict_type: SHARDED_STATE_DICT
+  fsdp_cpu_ram_efficient_loading: true

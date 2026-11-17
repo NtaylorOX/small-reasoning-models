@@ -1,0 +1,11 @@
+model: Qwen/Qwen2.5-0.5B
+seq_len: 1024
+micro_batch_size: 4
+gradient_accumulation_steps: 1
+steps: 50
+warmup_steps: 5         # excluded from timing
+learning_rate: 1.0e-5
+dtype: fp16             # bf16 on Ampere+
+gradient_checkpointing: false
+seed: 0
+results_file: results/03_distributed.jsonl
