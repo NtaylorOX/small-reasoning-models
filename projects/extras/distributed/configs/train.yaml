@@ -8,4 +8,4 @@ learning_rate: 1.0e-5
 dtype: fp16             # bf16 on Ampere+
 gradient_checkpointing: false
 seed: 0
-results_file: results/03_distributed.jsonl
+results_file: results/extras_distributed.jsonl

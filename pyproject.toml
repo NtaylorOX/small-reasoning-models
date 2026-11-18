@@ -1,7 +1,7 @@
 [project]
-name = "llm-post-training-lab"
+name = "small-reasoning-models"
 version = "0.1.0"
-description = "Hands-on LLM post-training, serving and multi-GPU projects on small open models."
+description = "Training small reasoning models with RL from verifiable rewards (RLVR), plus the serving and multi-GPU infrastructure behind it."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [

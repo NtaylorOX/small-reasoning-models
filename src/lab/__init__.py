@@ -1,1 +1,1 @@
-"""Shared helpers for the llm-post-training-lab projects."""
+"""Shared helpers for the small-reasoning-models projects."""

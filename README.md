@@ -1,33 +1,47 @@
-# llm-post-training-lab
+# small-reasoning-models
 
-Four hands-on projects on LLM serving, post-training and multi-GPU training, built on small open
-models (Qwen2.5 0.5-1.5B) and known-good public datasets. Each project ends with code, a results
-table backed by logged runs, and a short write-up.
+Training small (0.5-8B) reasoning models with **reinforcement learning from verifiable rewards
+(RLVR)**: GRPO-style training on math and procedural tasks, careful ablations of what RL actually
+changes, and multi-turn RL for models working inside a tool harness. The serving and multi-GPU
+infrastructure that makes RL rollouts fast is part of the repo too.
 
-Everything runs on **1 GPU** and scales to **N GPUs** by changing a config value or the launcher
-(`tensor_parallel_size` for serving, `accelerate launch` / `torchrun --nproc_per_node N` for training).
-The default target is Kaggle's free 2x T4.
+Everything runs on **1 GPU** and scales to **N** by changing a config value or the launcher
+(`tensor_parallel_size` for vLLM, `accelerate launch` / `torchrun --nproc_per_node N` for training).
+The default target is Kaggle's free 2x T4, with short rented A100/H100 runs for headline numbers.
 
-> Research and learning code. No result in this repo is claimed until it is in `results/` with the
-> config and environment that produced it.
+> Research and learning code. No result is claimed until it is in `results/` with the config and
+> environment that produced it. Models trained here are research artefacts.
 
 ## Roadmap
 
-| # | Project | Status | Weeks | Output | Compute |
-|---|---|---|---|---|---|
-| 1 | [Serving benchmark: vLLM vs HF, KV cache, prefix caching, TP](projects/01_serving/) | starter written, not run | 1-2 | Throughput/latency table + blog post | Kaggle 2x T4 (free) |
-| 2 | [SFT then DPO, reward model vs LLM judge](projects/02_sft_dpo/) | stub | 3-6 | Model + eval report on the Hub | Kaggle, then ~$30 A100/H100 |
-| 3 | [DDP vs FSDP2 vs ZeRO-2/3 scaling](projects/03_distributed/) | stub | 5-8 | Tokens/s, memory, MFU at 1/2/4/8 GPUs | Kaggle 2x T4, then ~$20 on 4-8 GPUs |
-| 4 | [GRPO on GSM8K / MATH with ablations](projects/04_grpo/) | stub | 8-12 | Preprint-style write-up | ~$50 H100 |
+| # | Project | Status | Output | Compute |
+|---|---|---|---|---|
+| 1 | [Rollout engine: vLLM vs HF, KV cache, prefix caching, TP](projects/01_serving/) | starter written, not run | throughput/latency table | Kaggle 2x T4 |
+| 2 | [GRPO on math: reproduce a small-model baseline](projects/02_grpo_math/) | stub | pass@1/pass@k on MATH-500, AIME, AMC | T4 (LoRA), then ~$30 H100 |
+| 3 | [What does RLVR do? pass@k, spurious rewards, GRPO variants](projects/03_rlvr_ablations/) | plan | preprint-style report | ~$40 H100 |
+| 4 | [Procedural environments and curricula (Reasoning Gym)](projects/04_procedural_envs/) | plan | transfer results | T4 / A100 |
+| 5 | [Small models in a coding harness, then multi-turn RL](projects/05_harness_agents/) | plan | ARC-style harness results; bridge to triage-gym | A100/H100 |
+| extras | [SFT distillation, DPO](projects/extras/sft_distill/) · [DDP/FSDP/ZeRO scaling](projects/extras/distributed/) | stubs | supporting skills | as needed |
 
-Work one project at a time, in order. Project 1 closes the serving gap first and is free.
+One project at a time, in order. Project 1 is free and makes every RL run after it cheaper to
+reason about; project 2 is the trusted baseline everything else builds on.
+
+**Direction.** Recent frontier work points at three things this roadmap mirrors at small scale:
+RLVR recipes and their failure modes (DAPO, Dr. GRPO, pass@k and spurious-reward critiques),
+procedurally generated environments instead of fixed datasets, and harness-based agentic reasoning
+(e.g. Tufa Labs' [duck harness](https://tufalabs.ai/research/duck-harness/) for ARC-AGI-3, which
+uses an untrained open model; project 5 asks whether RL helps inside such a harness).
+
+Datasets, benchmarks, frameworks and papers: **[docs/resources.md](docs/resources.md)**.
 
 ## Layout
 
 ```
 src/lab/            shared helpers: KV cache maths, stats, config + results logging, seeding
 projects/NN_*/      one directory per project: README, configs/, scripts
-results/            append-only JSONL results (committed); raw logs go in results/raw/ (ignored)
+projects/extras/    supporting projects (SFT/DPO, distributed scaling)
+docs/               resources and write-ups
+results/            append-only JSONL results (committed); raw logs in results/raw/ (ignored)
 tests/              offline unit tests (no GPU, no downloads)
 ```
 
@@ -36,49 +50,23 @@ tests/              offline unit tests (no GPU, no downloads)
 ```bash
 uv sync --extra dev                  # anywhere: lint, types, tests
 uv sync --extra dev --extra serve    # GPU box, project 1
-uv sync --extra dev --extra train    # GPU box, projects 2-4 (add --extra deepspeed for ZeRO)
+uv sync --extra dev --extra train    # GPU box, projects 2-5 (add --extra deepspeed for ZeRO)
 make check                           # ruff, mypy --strict on src/, pytest
 ```
 
-On Kaggle or Colab, `pip install -e ".[serve]"` works as well. Keys go in `.env` (see `.env.example`).
-
-## Reading list
-
-Starred items first.
-
-**Serving**
-- ★ [PagedAttention / vLLM paper](https://arxiv.org/abs/2309.06180), with the vLLM docs on prefix caching and continuous batching
-- CS336 inference lecture ([playlist](https://www.youtube.com/playlist?list=PLoROMvodv4rOY23Y0BoGoBGgQ1zmU_MT_))
-- Know by heart: KV bytes = 2 × layers × KV heads × head dim × bytes per value × tokens (`src/lab/kv_cache.py`)
-
-**Distributed training**
-- ★ [The Ultra-Scale Playbook](https://huggingface.co/spaces/nanotron/ultrascale-playbook) (data parallel and ZeRO chapters first)
-- ★ [Stanford CS336](https://stanford-cs336.github.io/spring2025/), assignment 2 (profiling, FlashAttention2 in Triton, DDP)
-- [GPU MODE lectures](https://github.com/gpu-mode/lectures)
-- Papers: [ZeRO](https://arxiv.org/abs/1910.02054), [Megatron-LM](https://arxiv.org/abs/1909.08053), [FlashAttention](https://arxiv.org/abs/2205.14135)
-
-**Post-training**
-- ★ [RLHF Book and course](https://rlhfbook.com/) by Nathan Lambert ([lectures](https://rlhfbook.com/course))
-- [Hugging Face LLM Course](https://huggingface.co/learn/llm-course/en/chapter12/1), chapters 11 (fine-tuning) and 12 (GRPO with TRL)
-- Papers, in order: [InstructGPT](https://arxiv.org/abs/2203.02155), [DPO](https://arxiv.org/abs/2305.18290),
-  [DeepSeekMath (GRPO)](https://arxiv.org/abs/2402.03300), [DeepSeek-R1](https://arxiv.org/abs/2501.12948),
-  [Tulu 3](https://arxiv.org/abs/2411.15124)
+On Kaggle or Colab, `pip install -e ".[serve]"` works too. Keys go in `.env` (see `.env.example`).
 
 ## Compute notes
 
-- **Kaggle Notebooks**: 2x T4 (16 GB each), 12 h sessions, about 30 GPU h/week (user-reported, unverified).
-  The only free option with two GPUs in one machine, so enough for DDP/FSDP/TP at N=2.
-- **T4 caveats**: compute capability 7.5, so fp16 only (no bf16), no FlashAttention-2, PCIe with no
-  NVLink (expect weak tensor-parallel scaling). Keep `dtype: half` / `fp16: true` in configs.
-- **Colab free / Lightning AI free**: single GPU, fine for quick tests.
-- **Modal Starter**: $30/month free serverless credit (unverified), good for short A100/H100 runs.
-- **Beyond 2 GPUs**: rent 4-8 GPUs for a few hours on Vast.ai or RunPod; Lambda for reliable 8x H100.
-  Third-party prices from Oct-Nov 2026 (unverified): RTX 4090 ~$0.36-0.40/h on Vast.ai, H100 ~$1.8-2.7/h
-  on Vast.ai/RunPod. Total budget for the plan: about $100.
-- Always stop rented instances and download `results/` before a session ends.
+- **Kaggle**: 2x T4 (16 GB each), 12 h sessions, about 30 GPU h/week (user-reported, unverified).
+  T4s are compute capability 7.5: fp16 only (no bf16), no FlashAttention-2, PCIe without NVLink.
+  fp16 RL can be numerically fragile; use LoRA and small models here, and do headline runs in bf16.
+- **Colab free / Lightning AI free**: one GPU, quick tests. **Modal Starter**: $30/month credit (unverified).
+- **Rented**: Vast.ai / RunPod for 1-8 GPUs by the hour (H100 roughly $1.8-2.7/h, Oct-Nov 2026 third-party
+  pages, unverified). Plan budget: about $100. Stop instances and download `results/` before shutting down.
 
 ## Conventions
 
-- Seeds are explicit config values. Every result row records config, git commit, GPUs and library versions.
+- Seeds are explicit config values; every result row records config, git commit, GPUs and library versions.
+- Evaluate base models with the same script before training; report test-set numbers only from full runs.
 - `make check` passes before every push. Tests run offline: no GPU, no model downloads.
-- Not medical, legal or production advice; models trained here are research artefacts.
