@@ -1,7 +1,6 @@
-"""SFT training (stub). Implement with TRL once project 1 is done.
+"""GRPO on GSM8K (stub). Implement with TRL's GRPOTrainer after projects 1-3.
 
-python projects/02_sft_dpo/train_sft.py --config projects/02_sft_dpo/configs/sft.yaml
-accelerate launch --num_processes N projects/02_sft_dpo/train_sft.py --config ...
+python projects/02_grpo_math/train_grpo.py --config projects/02_grpo_math/configs/grpo.yaml
 """
 
 from __future__ import annotations
@@ -17,7 +16,7 @@ def main() -> None:
     p.add_argument("--set", action="append", default=[])
     args = p.parse_args()
     cfg = load_config(args.config, args.set)
-    raise NotImplementedError(f"SFT training not written yet; config: {cfg}")
+    raise NotImplementedError(f"GRPO training not written yet; config: {cfg}")
 
 
 if __name__ == "__main__":

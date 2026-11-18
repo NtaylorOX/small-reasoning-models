@@ -2,7 +2,7 @@
 
 Instructions for AI coding agents working in this repo. `CLAUDE.md` imports this file.
 
-- One project at a time, in roadmap order. Stop for the owner's review after each step.
+- One project at a time, in roadmap order (see README). Datasets and tools: docs/resources.md. Stop for the owner's review after each step.
 - Small PRs, one concern each. `make check` must pass before every push.
 - Commits use the owner's identity (`Niall Taylor`, `49034323+NtaylorOX@users.noreply.github.com`).
   No AI attribution anywhere: no `Co-Authored-By` trailers, no "Generated with" lines.

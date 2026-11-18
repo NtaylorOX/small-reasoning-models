@@ -6,6 +6,11 @@
 continuous batching, PagedAttention, prefix caching, quantization and tensor parallelism
 matters at which batch size and prompt length?
 
+**Why it comes first in an RLVR repo:** in GRPO-style training, rollout generation is often most of the wall-clock time
+(measure the split yourself in project 2). The vLLM
+engine benchmarked here is the same one TRL and verl use for rollouts, and the shared-prefix
+experiment is exactly the GRPO case: G samples of one prompt share the whole prompt prefix.
+
 **CV line to earn:** "Benchmarked vLLM vs HF on 2x T4: N.Nx output throughput at batch 64,
 prefix caching cut p50 latency by N% on shared-prompt workloads; KV cache model within N% of
 measured."
@@ -54,7 +59,7 @@ Results append to `results/01_serving.jsonl` with the full config, GPU names and
 ### On Kaggle
 
 1. New notebook → Settings → Accelerator **GPU T4 x2**, Internet **on**.
-2. In a cell: `!git clone https://github.com/NtaylorOX/llm-post-training-lab && cd llm-post-training-lab && pip install -e ".[serve]"`
+2. In a cell: `!git clone https://github.com/NtaylorOX/small-reasoning-models && cd small-reasoning-models && pip install -e ".[serve]"`
    (a private repo needs a GitHub token stored as a Kaggle secret, or make the repo public first).
 3. Run the commands above with `!`. Download `results/01_serving.jsonl` before the session ends.
 

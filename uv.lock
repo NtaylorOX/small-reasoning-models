@@ -3415,63 +3415,6 @@ wheels = [
 ]
 
 [[package]]
-name = "llm-post-training-lab"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "pyyaml" },
-]
-
-[package.optional-dependencies]
-deepspeed = [
-    { name = "deepspeed" },
-]
-dev = [
-    { name = "mypy" },
-    { name = "pytest" },
-    { name = "ruff" },
-    { name = "types-pyyaml" },
-]
-serve = [
-    { name = "accelerate", version = "1.15.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "accelerate", version = "1.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
-    { name = "transformers", version = "5.20.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "transformers", version = "5.23.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
-    { name = "vllm" },
-]
-train = [
-    { name = "accelerate", version = "1.15.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "accelerate", version = "1.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
-    { name = "datasets" },
-    { name = "peft" },
-    { name = "torch" },
-    { name = "transformers", version = "5.20.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "transformers", version = "5.23.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
-    { name = "trl", version = "1.14.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "trl", version = "1.18.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "accelerate", marker = "extra == 'serve'", specifier = ">=0.34" },
-    { name = "accelerate", marker = "extra == 'train'", specifier = ">=0.34" },
-    { name = "datasets", marker = "extra == 'train'", specifier = ">=3.0" },
-    { name = "deepspeed", marker = "extra == 'deepspeed'", specifier = ">=0.15" },
-    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.11" },
-    { name = "peft", marker = "extra == 'train'", specifier = ">=0.13" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0" },
-    { name = "pyyaml", specifier = ">=6.0" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.6" },
-    { name = "torch", marker = "extra == 'train'", specifier = ">=2.4" },
-    { name = "transformers", marker = "extra == 'serve'", specifier = ">=4.45" },
-    { name = "transformers", marker = "extra == 'train'", specifier = ">=4.45" },
-    { name = "trl", marker = "extra == 'train'", specifier = ">=0.17" },
-    { name = "types-pyyaml", marker = "extra == 'dev'" },
-    { name = "vllm", marker = "extra == 'serve'", specifier = ">=0.8" },
-]
-provides-extras = ["serve", "train", "deepspeed", "dev"]
-
-[[package]]
 name = "llvmlite"
 version = "0.47.0"
 source = { registry = "https://pypi.org/simple" }
@@ -8440,6 +8383,63 @@ sdist = { url = "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl", hash = "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274", size = 11050, upload-time = "2024-12-04T17:35:26.475Z" },
 ]
+
+[[package]]
+name = "small-reasoning-models"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "pyyaml" },
+]
+
+[package.optional-dependencies]
+deepspeed = [
+    { name = "deepspeed" },
+]
+dev = [
+    { name = "mypy" },
+    { name = "pytest" },
+    { name = "ruff" },
+    { name = "types-pyyaml" },
+]
+serve = [
+    { name = "accelerate", version = "1.15.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "accelerate", version = "1.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "transformers", version = "5.20.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "transformers", version = "5.23.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "vllm" },
+]
+train = [
+    { name = "accelerate", version = "1.15.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "accelerate", version = "1.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "datasets" },
+    { name = "peft" },
+    { name = "torch" },
+    { name = "transformers", version = "5.20.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "transformers", version = "5.23.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "trl", version = "1.14.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "trl", version = "1.18.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "accelerate", marker = "extra == 'serve'", specifier = ">=0.34" },
+    { name = "accelerate", marker = "extra == 'train'", specifier = ">=0.34" },
+    { name = "datasets", marker = "extra == 'train'", specifier = ">=3.0" },
+    { name = "deepspeed", marker = "extra == 'deepspeed'", specifier = ">=0.15" },
+    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.11" },
+    { name = "peft", marker = "extra == 'train'", specifier = ">=0.13" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0" },
+    { name = "pyyaml", specifier = ">=6.0" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.6" },
+    { name = "torch", marker = "extra == 'train'", specifier = ">=2.4" },
+    { name = "transformers", marker = "extra == 'serve'", specifier = ">=4.45" },
+    { name = "transformers", marker = "extra == 'train'", specifier = ">=4.45" },
+    { name = "trl", marker = "extra == 'train'", specifier = ">=0.17" },
+    { name = "types-pyyaml", marker = "extra == 'dev'" },
+    { name = "vllm", marker = "extra == 'serve'", specifier = ">=0.8" },
+]
+provides-extras = ["serve", "train", "deepspeed", "dev"]
 
 [[package]]
 name = "sniffio"
