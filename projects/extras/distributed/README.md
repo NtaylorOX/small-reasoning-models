@@ -11,7 +11,7 @@ strategies at 1, 2, 4 and 8 GPUs? When would you pick FSDP over ZeRO-3, and why?
    steps) that logs tokens/s, `torch.cuda.max_memory_allocated()` and MFU
    (6 × params × tokens/s ÷ peak FLOPs; T4 fp16 peak is ~65 TFLOPs, unverified).
 2. Run it under each launcher config below at 1 and 2 GPUs on Kaggle, then 4 and 8 on a rented node.
-3. From scratch, following CS336 assignment 2: DDP with bucketed all-reduce, and a toy
+3. From scratch, following CS336 assignment 2 (course list in [docs/resources.md](../../../docs/resources.md#distributed-and-efficient-gpu-training)): DDP with bucketed all-reduce, and a toy
    tensor-parallel MLP. Compare against `torch.nn.parallel.DistributedDataParallel`.
 4. Produce the scaling table and a short write-up.
 
