@@ -86,6 +86,31 @@ Survey of 16 libraries: [Keep the Tokens Flowing](https://huggingface.co/blog/as
 10. Tufa Labs, [duck harness](https://tufalabs.ai/research/duck-harness/) (✓ [code](https://github.com/Tufalabs/duck-harness)) and
     Executable World Models, arXiv 2605.05138: harness design for interactive reasoning
 
+## Distributed and efficient GPU training
+
+Researched 2026-11-25. Links and course contents were read from each course's own page on that date;
+prices and cohort dates were not shown where marked (unverified). In suggested order, with the
+project each one supports:
+
+| # | Resource | Cost | Covers | Use it for |
+|---|---|---|---|---|
+| 1 | [HF Ultra-Scale Playbook](https://huggingface.co/spaces/nanotron/ultrascale-playbook) (Feb 2025) | free | DP, ZeRO-1/2/3, tensor, sequence, context, pipeline and expert parallelism; memory and comms maths; scaling experiments | [extras/distributed](../projects/extras/distributed/): read alongside it; later torchtitan 2D/3D parallelism |
+| 2 | [Stanford CS336](https://cs336.stanford.edu) (Spring 2026 videos on YouTube) | free online | assignment 2: profiling, Triton FlashAttention-2, memory-efficient distributed training loop | [extras/distributed](../projects/extras/distributed/) step 3 (from-scratch DDP); Triton/roofline work. Needs your own GPU time |
+| 3 | [How to Scale Your Model](https://jax-ml.github.io/scaling-book) (Google DeepMind) | free | rooflines, sharding, FSDP, Megatron TP, pipelining, profiling, worked problems, JAX, a GPU chapter | performance reasoning for [01_serving](../projects/01_serving/) and distributed; a JAX/TPU port |
+| 4 | [GPU MODE lectures](https://github.com/gpu-mode/lectures) | free | 100+ talks with code | pick by topic: 1 and 16 (profiling), 14 and 29 (Triton), 17 and 67 (NCCL), 39 (TorchTitan) |
+| 5 | [PyTorch distributed tutorials](https://docs.pytorch.org/tutorials/distributed/home.html) + [torchtitan](https://github.com/pytorch/torchtitan) | free | FSDP2, DTensor, tensor parallel reference code | the code you actually write in [extras/distributed](../projects/extras/distributed/) and the RL projects' N-GPU runs |
+
+**Paid option:** Zach Mueller's [Scratch to Scale](https://maven.com/walk-with-code/scratch-to-scale)
+(Maven, live cohort with recordings). Implement DDP, ZeRO-2, context and expert parallelism from scratch,
+with Slurm, Nsight and MFU profiling, on an included multi-node H100 cluster. Price and next cohort dates
+not shown on the page (unverified). The only option here with real multi-node hardware.
+
+**Deeper reading:** [CMU 15-779](https://www.cs.cmu.edu/~zhihaoj2/15-779/) (Fall 2025, LLM systems):
+reading list on ZeRO/FSDP, Megatron, PipeDream, CUDA/Triton.
+
+**Skipped:** NVIDIA DLI Model Parallelism workshop (only public date is from 2021, pricing on request);
+MIT 6.5940 (mostly efficiency and TinyML, light on distributed training).
+
 ## Courses and lists
 
 - [RLHF Book](https://rlhfbook.com/) (Lambert): policy gradients, RLVR chapters
