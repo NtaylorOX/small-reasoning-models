@@ -34,6 +34,11 @@ uses an untrained open model; project 5 asks whether RL helps inside such a harn
 
 Datasets, benchmarks, frameworks and papers: **[docs/resources.md](docs/resources.md)**.
 
+**Parallel track: agent security and safety evals.** Red teaming (PAIR/TAP/GCG), refusal-direction
+robustness, prompt injection against tool agents, and cyber evals, all on local models in an isolated
+sandbox. Plan, courses, tools and projects S1-S6: **[docs/security-track.md](docs/security-track.md)**.
+The hands-on code lives in a separate sandbox repo.
+
 ## Layout
 
 ```
